@@ -116,6 +116,11 @@ def GetPathDataDict(path):
   """Returns a dict of all the data needed to template a page."""
   data = {}
 
+  # Page static data
+  data['page_title'] = 'SLoCUST Demo'
+
+  # Page dynamic data
+
   return data
 
 
