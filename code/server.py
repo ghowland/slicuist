@@ -55,7 +55,7 @@ def RenderPage(path):
 
   # Dynamically render HTML pages
   if path.endswith('.html'):
-    # Original pages were hard-coded into 'pages/' path, can remove this out any time
+    # If you want to prefix the HTML pages in the TEMPLATE_PATH directory, so that formatting here.  Currently it's flat.
     template_path = path
 
     # Any data we want to get into the templated path should go into this dict
@@ -66,10 +66,12 @@ def RenderPage(path):
   # All other requests are static, and are not templated
   else:
     try:
+      # Get the static content from our TEMPLATE_PATH first and STATIC_PATH if it doesnt exist in the template path
       static_path = GetStaticPath(path)
 
-      content = open(static_path).read()  # Maximum efficiency and use of garbage collection!
+      content = open(static_path).read()  # Maximum typing efficiency and use of garbage collector!
 
+      # Make a response object and set the MIME type so the content works in the browser
       response = SERVER.make_response(content)
       response.mimetype = GetPathMimeType(path)
 
