@@ -56,7 +56,7 @@ def RenderPage(path):
   # Dynamically render HTML pages
   if path.endswith('.html'):
     # Original pages were hard-coded into 'pages/' path, can remove this out any time
-    template_path = 'pages/%s' % path
+    template_path = path
 
     # Any data we want to get into the templated path should go into this dict
     template_data = GetPathDataDict(path)
