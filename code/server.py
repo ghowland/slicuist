@@ -14,23 +14,36 @@ from flask import render_template
 # Are we debugging the web server?  Get tracebacks, has a console for testing expressions
 DEBUG = True
 
+
+# If we are in DEBUG mode, we want to protect our traffic, localhost only
+if DEBUG:
+  # Connections only on localhost (safer)
+  SERVER_ADDRESS = '127.0.0.1'
+# Else, we are not in DEBUG mode.  We can serve traffic from any interface (be careful, this may not be what you really want)
+else:
+  # Accept connections from all interfaces.  Could receive external traffic, like from the Internet.
+  #SERVER_ADDRESS = '0.0.0.0'
+  # Connections only on localhost (safer)   --    Protected, for demo purposes
+  SERVER_ADDRESS = '127.0.0.1'
+
+
 # Flask server name
 SERVER_NAME = 'slocust_demo'
 
-#SERVER_ADDRESS = '0.0.0.0'	# All interfaces all connections
-SERVER_ADDRESS = '127.0.0.1'	# Connections only on localhost (safer)
+SERVER_PORT = 5000
 
 # Paths
 STATIC_PATH = 'web_template'
 TEMPLATE_PATH = 'templates'
 
+
 # -- Create the Flask server.  It is module level as we are going to use decorators against it for our module functions. --
-#SERVER = Flask(SERVER_NAME, static_folder=STATIC_PATH, template_folder=TEMPLATE_PATH)
 SERVER = Flask(SERVER_NAME, template_folder=TEMPLATE_PATH)
 
 
 class FileNotFoundException(Exception):
   """If we cant find a static file, this is thrown."""
+  #TODO(g): Is this already in Flask, and I can just use their exceptions?  Check and replace.
 
 
 @SERVER.route('/', methods=['GET', 'POST'])
@@ -132,7 +145,7 @@ def Main(args=None):
   if not args:
     args = []
   
-  SERVER.run(SERVER_ADDRESS, debug=DEBUG)
+  SERVER.run(SERVER_ADDRESS, port=SERVER_PORT, debug=DEBUG)
 
 
 if __name__ == '__main__':
