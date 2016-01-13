@@ -26,7 +26,11 @@ Then pull down this repo locally:
 git clone https://github.com/ghowland/slocust.git
 ```
 
-Then run the server:
+Then run the server from the repo directory:
+
+```
+./start.sh
+```
 
 And direct your browser to this page:
 
