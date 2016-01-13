@@ -61,7 +61,12 @@ def RenderPage(path):
   else:
     static_path = '%s/%s' % (STATIC_PATH, path)
 
-    return open(static_path).read()  # Maximum efficiency and use of garbage collection!
+    content = open(static_path).read()  # Maximum efficiency and use of garbage collection!
+
+    response = SERVER.make_response(content)
+    response.mimetype = GetPathMimeType(path)
+
+    return response
 
 
 
@@ -70,6 +75,25 @@ def GetPathDataDict(path):
   data = {}
 
   return data
+
+
+def GetPathMimeType(path):
+  """Determine the MIME type of this path"""
+  suffix = path.lower().split('.')[-1]
+
+  # Cheapo way to get some MIME types
+  if suffix == 'css':
+    return 'text/css'
+  elif suffix == 'js':
+    return 'text/js'
+  elif suffix == 'png':
+    return 'image/png'
+  elif suffix == 'jpg':
+    return 'image/jpeg'
+  elif suffix == 'gif':
+    return 'image/gif'
+  else:
+    return 'text'
 
 
 def Main(args=None):
