@@ -12,6 +12,28 @@ In contrast, the methodology I have been using through browsers (HTML/JS on the 
 
 The goal of efficiency should be to create logarithmic functions, but this takes many efficiencies to create, and may ultimately be impossible and require an "M*log(N)" algorithm at best.  Still, sub-linear is a great efficiency over the N^2 and above type complexities I have found in working with traditional GUI libraries and frameworks.
 
+## Installation
+
+You will need Python 2 and the library Flask.  Install this with Pip:
+
+```
+pip install flask
+```
+
+Then pull down this repo locally:
+
+```
+git clone https://github.com/ghowland/slocust.git
+```
+
+Then run the server:
+
+And direct your browser to this page:
+
+```
+http://127.0.0.1:5000/
+```
+
 ## Example Website
 
 I am using the base Bootstrap web template released under the Apache 2.0 license at: http://startbootstrap.com/template-overviews/sb-admin-2/
@@ -23,4 +45,3 @@ The active web files that the Python dynamic web server is using are under the "
 The "./web/" path will also server as our Document Root for the static files of the server, although the program will be launched from the project-root directory ("./"), so both the "./scripts" and "./web" directory are reachable as children.  The "./data/" will contain an example SQLite 3 database called "opsdb.db", which I will use to populate dynamic data in the Python Flask server.  There are backups of this database and an HTML representation of the data in "./__databases" which will show the progression of this schema and data through SQL dumps, for those interested in that.
 
 I have written the example Python dynamic web server portion of this using Flask, which is a "micro-framework", and thus has very short coe paths.  The initial version is a very simple and naive RPC implementation.  I may extend this to demonstrate REST and other styles of RPC in the future, but those are not necessary to demonstrate this technique as they are just syntax sugar and conventions for a different type of scalability (mostly, name spaces and consistent access methods).
-

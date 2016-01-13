@@ -5,10 +5,15 @@ Simple example Flask server.  Generic page renderer and dynamic page update RPC 
 
 import sys
 import os
+import sqlite3
 
 from flask import Flask
 from flask import request
 from flask import render_template
+from flask import g as flask_dbi
+
+# Custom module to wrap database related stuff
+from database import Query
 
 
 # Are we debugging the web server?  Get tracebacks, has a console for testing expressions
@@ -129,6 +134,14 @@ def GetPathDataDict(path):
 
   # Page dynamic data
 
+  # Get SQLite3 database cursor.  Hooked up through magic flask.g (as flask_dbi) method
+  cursor = GetDatabase().cursor()
+
+  sql = "SELECT * FROM service"
+  rows = Query(cursor, sql)
+
+  data['test_data'] = str(rows)
+
   return data
 
 
@@ -149,6 +162,28 @@ def GetPathMimeType(path):
     return 'image/gif'
   else:
     return 'text'
+
+
+def GetDatabase():
+  """Get the database connection (singleton) and store it in Flask so it will be closed on server destruction."""
+  db = getattr(flask_dbi, '_database', None)
+  if db is None:
+    #TODO(g): Move the connection into the database.sqlite_wrapper module.  Here for demo clarity.
+    db = flask_dbi._database = sqlite3.connect(DATABASE, detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
+
+    # Allow accessing the rows with column indexes or column field names (case-insensitive)
+    db.row_factory = sqlite3.Row
+
+  return db
+
+
+@SERVER.teardown_appcontext
+def CloseDatabaseConnection(exception):
+  """Flask uses this to automatically close the DB connection."""
+  db = getattr(flask_dbi, '_database', None)
+
+  if db is not None:
+    db.close()
 
 
 def Main(args=None):
