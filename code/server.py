@@ -6,15 +6,26 @@ import sys
 
 from flask import Flask
 from flask import request
+from flask import render_template
 
-# Create the Flask server.  It is module level as we are going to use decorators against it for our module functions.
-SERVER = Flask(__name__)
+
+# Are we debugging the web server?  Get tracebacks, has a console for testing expressions
+DEBUG = True
+
+# Flask server name
+SERVER_NAME = 'slocust_demo'
 
 #SERVER_ADDRESS = '0.0.0.0'	# All interfaces all connections
 SERVER_ADDRESS = '127.0.0.1'	# Connections only on localhost (safer)
 
-# Are we debugging the web server?  Get tracebacks, has a console for testing expressions
-DEBUG = True
+# Paths
+STATIC_PATH = 'web_template'
+TEMPLATE_PATH = 'templates'
+
+# -- Create the Flask server.  It is module level as we are going to use decorators against it for our module functions. --
+#SERVER = Flask(SERVER_NAME, static_folder=STATIC_PATH, template_folder=TEMPLATE_PATH)
+SERVER = Flask(SERVER_NAME, template_folder=TEMPLATE_PATH)
+
 
 
 @SERVER.route('/', methods=['GET', 'POST'])
@@ -37,9 +48,28 @@ def RenderPage(path):
   if not path:
     path = 'index.html'
 
-  output = 'Path: %s' % path
+  # Dynamically render HTML pages
+  if path.endswith('.html'):
+    template_path = 'pages/%s' % path
 
-  return output
+    # Any data we want to get into the templated path should go into this dict
+    template_data = GetPathDataDict(path)
+
+    return render_template(template_path, **template_data)
+
+  # All other requests are static, and are not templated
+  else:
+    static_path = '%s/%s' % (STATIC_PATH, path)
+
+    return open(static_path).read()  # Maximum efficiency and use of garbage collection!
+
+
+
+def GetPathDataDict(path):
+  """Returns a dict of all the data needed to template a page."""
+  data = {}
+
+  return data
 
 
 def Main(args=None):
