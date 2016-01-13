@@ -1,5 +1,5 @@
 """
-Simple example Flask server
+Simple example Flask server.  Generic page renderer and dynamic page update RPC mechanism.
 """
 
 
@@ -27,14 +27,18 @@ else:
   SERVER_ADDRESS = '127.0.0.1'
 
 
+# SQLite 3 Database.  I wrote this as an example of an Comprehensive Authoritative Operational Database
+DATABASE = 'database/opsdb.db'
+
 # Flask server name
 SERVER_NAME = 'slocust_demo'
 
+# Listening Port
 SERVER_PORT = 5000
 
-# Paths
-STATIC_PATH = 'web_template'
-TEMPLATE_PATH = 'templates'
+# Paths to our web content
+STATIC_PATH = 'web_template'  # Static content
+TEMPLATE_PATH = 'templates'   # Dynamic templates
 
 
 # -- Create the Flask server.  It is module level as we are going to use decorators against it for our module functions. --
@@ -62,6 +66,7 @@ def RenderPath(path):
 
 
 def RenderPage(path):
+  """Every page is rendered exactly the same way.  Paths are irrelevant except as another data point."""
   # Set the index path, if we got nothing
   if not path:
     path = 'index.html'
@@ -78,6 +83,7 @@ def RenderPage(path):
 
   # All other requests are static, and are not templated
   else:
+    #NOTE(g): This should obviously be served from a static content server for performance.  This is for development.
     try:
       # Get the static content from our TEMPLATE_PATH first and STATIC_PATH if it doesnt exist in the template path
       static_path = GetStaticPath(path)
@@ -90,6 +96,7 @@ def RenderPage(path):
 
       return response
 
+    # GetStaticPath() throws this if it cant find a path in our dynamic templates or our static files
     except FileNotFoundException, e:
       #TODO(g): Handle this the Flask way, also use a template page instead of 1 sentance string
       response = SERVER.make_response('404: File not found: %s' % path)
@@ -104,6 +111,7 @@ def GetStaticPath(path):
   template_path = '%s/%s' % (TEMPLATE_PATH, path)   # Try first
   static_path = '%s/%s' % (STATIC_PATH, path)       # Try second
 
+  # Return a valid path or raise an exception...
   if os.path.isfile(template_path):
     return template_path
   elif os.path.isfile(static_path):
@@ -128,7 +136,7 @@ def GetPathMimeType(path):
   """Determine the MIME type of this path"""
   suffix = path.lower().split('.')[-1]
 
-  # Cheapo way to get some MIME types
+  # Cheapo way to get some MIME types.  Could easily through this in a data file and skip the if/else chain and use a straight look-up
   if suffix == 'css':
     return 'text/css'
   elif suffix == 'js':
