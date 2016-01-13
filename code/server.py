@@ -2,7 +2,9 @@
 Simple example Flask server
 """
 
+
 import sys
+import os
 
 from flask import Flask
 from flask import request
@@ -27,6 +29,9 @@ TEMPLATE_PATH = 'templates'
 SERVER = Flask(SERVER_NAME, template_folder=TEMPLATE_PATH)
 
 
+class FileNotFoundException(Exception):
+  """If we cant find a static file, this is thrown."""
+
 
 @SERVER.route('/', methods=['GET', 'POST'])
 def RenderIndex():
@@ -50,6 +55,7 @@ def RenderPage(path):
 
   # Dynamically render HTML pages
   if path.endswith('.html'):
+    # Original pages were hard-coded into 'pages/' path, can remove this out any time
     template_path = 'pages/%s' % path
 
     # Any data we want to get into the templated path should go into this dict
@@ -59,15 +65,36 @@ def RenderPage(path):
 
   # All other requests are static, and are not templated
   else:
-    static_path = '%s/%s' % (STATIC_PATH, path)
+    try:
+      static_path = GetStaticPath(path)
 
-    content = open(static_path).read()  # Maximum efficiency and use of garbage collection!
+      content = open(static_path).read()  # Maximum efficiency and use of garbage collection!
 
-    response = SERVER.make_response(content)
-    response.mimetype = GetPathMimeType(path)
+      response = SERVER.make_response(content)
+      response.mimetype = GetPathMimeType(path)
 
-    return response
+      return response
 
+    except FileNotFoundException, e:
+      #TODO(g): Handle this the Flask way, also use a template page instead of 1 sentance string
+      response = SERVER.make_response('404: File not found: %s' % path)
+      response.status_code = 404
+      return response
+
+
+def GetStaticPath(path):
+  """Will try our template path, and fall back to our static path, so we have 
+  options and our original content if we dont override it.
+  """
+  template_path = '%s/%s' % (TEMPLATE_PATH, path)   # Try first
+  static_path = '%s/%s' % (STATIC_PATH, path)       # Try second
+
+  if os.path.isfile(template_path):
+    return template_path
+  elif os.path.isfile(static_path):
+    return static_path
+  else:
+    raise FileNotFoundException('Could not find: %s' % path)
 
 
 def GetPathDataDict(path):
