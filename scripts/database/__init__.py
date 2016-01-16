@@ -20,6 +20,14 @@ DATABASE_CONNECTIONS = {}
 DATABASE_CONNECTION_CURSORS = {}
 
 
+def SanitizeSQL(sql_value):
+  """Clean values before they are put into the database."""
+  text = str(value)
+  text = text.replace("'", "''")
+  
+  return text
+
+
 def Connect(database_path):
   """Wrapper: Connect to database"""
   return sqlite_wrapper.Connect(database_path)

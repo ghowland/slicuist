@@ -6,6 +6,7 @@ Simple example Flask server.  Generic page renderer and dynamic page update RPC 
 import sys
 import os
 import sqlite3
+import json
 
 from flask import Flask
 from flask import request
@@ -14,6 +15,9 @@ from flask import g as flask_dbi
 
 # Custom module to wrap database related stuff
 import database
+
+# Rendering our custom web UI elements
+import webui
 
 
 # Are we debugging the web server?  Get tracebacks, has a console for testing expressions
@@ -133,28 +137,61 @@ def GetPathDataDict(path):
   """Returns a dict of all the data needed to template a page."""
   data = {}
 
-  # Dyanmically get the page from the web_site and web_site_page
-  pass
-  
-  
-  # Load the base page this template uses
-  pass
+  # Get SQLite3 database cursor
+  cursor = database.GetDatabaseCursor(DATABASE)
 
+  #TODO(g): Dont do this every time.  It's wasteful...  Mostly un-elegant, since its such a fast operation...
+  database.populate_stats.PopulateSchemaStatistics(cursor)
+
+
+  # Get the web_site -- Currently just getting any page that matches, this is not the full demo functionality
+  #TODO(g): X-Forwarded-For (priority), or domain from the request.  Check them all.
+  pass
+  
+
+  # Dyanmically get the page from the web_site and web_site_page
+  sql = "SELECT * FROM web_site_page WHERE name = ?"
+  pages = database.Query(cursor, sql, [path])
+  
+  # If we didnt find any page, just return empty data.  There is nothing to template.
+  if not pages:
+    return {}
+  
+  # The first page is our page
+  page = pages[0]
+  
   
   # Generate the nav-bar from the web_site_map and web_site_map_items
   pass
 
+  # Get the widgets for this page
+  sql = "SELECT * FROM web_site_page_widget WHERE web_site_page = ?"
+  page_widgets = database.Query(cursor, sql, [page['id']])
   
-  # Template the nav-bar into the base page
-  pass
   
-  
-  # Cache the base page and nav bar for this user?
-  pass
-
-
   # Generate the Widgets for this Page
-  pass
+  for page_widget in page_widgets:
+    # Get the widget data
+    sql = "SELECT * FROM web_widget WHERE id = ?"
+    widget_list = database.Query(cursor, sql, [page_widget['web_widget']])
+    
+    # Ensure we found the widget
+    if not widget_list:
+      print 'ERROR: Missing Widget, skipping: %s' % page_widget
+    
+    # Else, process the widget
+    else:
+      widget = widget_list[0]
+      
+      # Get the widget data from our JSON data
+      widget_data = json.loads(page_widget['data_json'])
+      
+      # Render the widget from our HTML path, the page_widget name (element ID), and JSON data recorded as argument info from the page_widget_data
+      #TODO(g): Will also need to pull in arguments, because sometimes we need page state to base on what the UI elements will deliver.  Add this in once the basic functinoality works.
+      widget_output = webui.Render(cursor, widget, page_widget, widget_data)
+      
+      # Put the widget output into our data
+      data[page_widget['name']] = widget_output
   
   
   # Template the widgets into the page, using their widget template names and their data_json for their data values.  Figure out all the table stuff...
@@ -166,12 +203,6 @@ def GetPathDataDict(path):
   data['page_title'] = 'SLoCUST Demo'
 
   # Page dynamic data
-
-  # Get SQLite3 database cursor
-  cursor = database.GetDatabaseCursor(DATABASE)
-
-  #TODO(g): Dont do this every time.  It's wasteful...  Mostly un-elegant, since its such a fast operation...
-  database.populate_stats.PopulateSchemaStatistics(cursor)
 
   sql = "SELECT * FROM service"
   rows = database.Query(cursor, sql)
