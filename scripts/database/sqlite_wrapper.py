@@ -10,8 +10,9 @@ import sqlite3
 
 def Connect(database_path):
   """Returns sqlite3 Database Connection object."""
-  # Connect, parse the column names and the data types
-  db = sqlite3.connect(database_path, detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
+  # Connect, parse the column names and the data types.  Set isolation_level=None (Auto-Commit)
+  #TODO(g): Handle transactions.  For now they are just in the way as I'm only doing simple things for the demo.
+  db = sqlite3.connect(database_path, isolation_level=None, detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
 
   # Allow accessing the rows with column indexes or column field names (case-insensitive)
   db.row_factory = sqlite3.Row
@@ -36,8 +37,11 @@ def Query(cursor, sql, params=None):
 
   Returns: list of dicts
   """
+  # No parameters
   if not params:
     cursor.execute(sql)
+  
+  # Else, parameters need to be passed in too
   else:
     cursor.execute(sql, params)
 

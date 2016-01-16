@@ -45,7 +45,7 @@ def CloseAll():
 
 def Query(cursor, sql, params=None):
   """Wrapper: Query"""
-  return sqlite_wrapper.Query(cursor, sql, params=None)
+  return sqlite_wrapper.Query(cursor, sql, params=params)
 
 
 def GetDatabase(db_connection_value):
