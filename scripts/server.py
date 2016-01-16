@@ -118,9 +118,13 @@ def GetStaticPath(path):
 
   # Return a valid path or raise an exception...
   if os.path.isfile(template_path):
+    # It's one of our Template files
     return template_path
+  
   elif os.path.isfile(static_path):
+    # It's a default static file (from our base template, that we havent modified at all)
     return static_path
+  
   else:
     raise FileNotFoundException('Could not find: %s' % path)
 
@@ -128,6 +132,35 @@ def GetStaticPath(path):
 def GetPathDataDict(path):
   """Returns a dict of all the data needed to template a page."""
   data = {}
+
+  # Dyanmically get the page from the web_site and web_site_page
+  pass
+  
+  
+  # Load the base page this template uses
+  pass
+
+  
+  # Generate the nav-bar from the web_site_map and web_site_map_items
+  pass
+
+  
+  # Template the nav-bar into the base page
+  pass
+  
+  
+  # Cache the base page and nav bar for this user?
+  pass
+
+
+  # Generate the Widgets for this Page
+  pass
+  
+  
+  # Template the widgets into the page, using their widget template names and their data_json for their data values.  Figure out all the table stuff...
+  pass
+  
+  
 
   # Page static data
   data['page_title'] = 'SLoCUST Demo'
@@ -137,14 +170,17 @@ def GetPathDataDict(path):
   # Get SQLite3 database cursor
   cursor = database.GetDatabaseCursor(DATABASE)
 
-  #sql = "SELECT * FROM service"
+  #TODO(g): Dont do this every time.  It's wasteful...  Mostly un-elegant, since its such a fast operation...
+  database.populate_stats.PopulateSchemaStatistics(cursor)
+
+  sql = "SELECT * FROM service"
+  rows = database.Query(cursor, sql)
+
+  #sql = 'SELECT name FROM sqlite_master WHERE type = "table"'
   #rows = database.Query(cursor, sql)
-
-  sql = 'SELECT name FROM sqlite_master WHERE type = "table"'
-  rows = database.Query(cursor, sql)
-
-  sql = 'PRAGMA table_info(schema)'
-  rows = database.Query(cursor, sql)
+  #
+  #sql = 'PRAGMA table_info(schema)'
+  #rows = database.Query(cursor, sql)
 
 
   data['test_data'] = str(rows)

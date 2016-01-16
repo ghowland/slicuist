@@ -11,6 +11,9 @@ interface, but this is sufficient for this demo.
 
 import sqlite_wrapper
 
+# This Demonstration requires stats for the UI.  This module provides methods to generate them.
+import populate_stats
+
 
 # Global Cache for Database Connections, key is string of the connection path
 DATABASE_CONNECTIONS = {}
