@@ -13,7 +13,7 @@ from flask import render_template
 from flask import g as flask_dbi
 
 # Custom module to wrap database related stuff
-from database import Query
+import database
 
 
 # Are we debugging the web server?  Get tracebacks, has a console for testing expressions
@@ -134,11 +134,18 @@ def GetPathDataDict(path):
 
   # Page dynamic data
 
-  # Get SQLite3 database cursor.  Hooked up through magic flask.g (as flask_dbi) method
-  cursor = GetDatabase().cursor()
+  # Get SQLite3 database cursor
+  cursor = database.GetDatabaseCursor(DATABASE)
 
-  sql = "SELECT * FROM service"
-  rows = Query(cursor, sql)
+  #sql = "SELECT * FROM service"
+  #rows = database.Query(cursor, sql)
+
+  sql = 'SELECT name FROM sqlite_master WHERE type = "table"'
+  rows = database.Query(cursor, sql)
+
+  sql = 'PRAGMA table_info(schema)'
+  rows = database.Query(cursor, sql)
+
 
   data['test_data'] = str(rows)
 
@@ -150,6 +157,7 @@ def GetPathMimeType(path):
   suffix = path.lower().split('.')[-1]
 
   # Cheapo way to get some MIME types.  Could easily through this in a data file and skip the if/else chain and use a straight look-up
+  #TODO(g): Does Flask already have a built-in or standard way to do this which is better?  Probably...  Replace.
   if suffix == 'css':
     return 'text/css'
   elif suffix == 'js':
@@ -164,26 +172,10 @@ def GetPathMimeType(path):
     return 'text'
 
 
-def GetDatabase():
-  """Get the database connection (singleton) and store it in Flask so it will be closed on server destruction."""
-  db = getattr(flask_dbi, '_database', None)
-  if db is None:
-    #TODO(g): Move the connection into the database.sqlite_wrapper module.  Here for demo clarity.
-    db = flask_dbi._database = sqlite3.connect(DATABASE, detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
-
-    # Allow accessing the rows with column indexes or column field names (case-insensitive)
-    db.row_factory = sqlite3.Row
-
-  return db
-
-
 @SERVER.teardown_appcontext
 def CloseDatabaseConnection(exception):
-  """Flask uses this to automatically close the DB connection."""
-  db = getattr(flask_dbi, '_database', None)
-
-  if db is not None:
-    db.close()
+  """Flask is shutting down the server, so close all the DB connections we have open."""
+  database.CloseAll()
 
 
 def Main(args=None):
