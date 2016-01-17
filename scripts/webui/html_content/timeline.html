@@ -7,9 +7,8 @@
                         <div class="panel-body">
                             <ul class="timeline">
                               
-                              {% set row_regular_inverted = "" %}
                               {% for item in items %}
-                                <li class="{{ row_regular_inverted }}">
+                                <li class="{{ loop.cycle('', 'timeline-inverted') }}">
                                     <div class="timeline-badge {{ item.color }}"><i class="fa fa-{{ item.icon }}"></i>
                                     </div>
                                     <div class="timeline-panel">
@@ -23,12 +22,6 @@
                                         </div>
                                     </div>
                                 </li>
-                                
-                                {% if row_regular_inverted == "" %}
-                                  {% set row_regular_inverted = "timeline-inverted" %}
-                                {% else %}
-                                  {% set row_regular_inverted = "" %}
-                                {% endif %}
                                 
                               {% endfor %}
                                 

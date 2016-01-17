@@ -14,20 +14,12 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                      {% set row_odd_even = "odd" %}
                                       {% for item in rows %}
-                                        <tr class="{{ row_odd_even }}">
+                                        <tr class="{{ loop.cycle('odd', 'even') }}">
                                           {% for field in fields %}
                                             <td>{{ item[field.name] }}</td>
                                           {% endfor %}
                                         </tr>
-                                        
-                                        {% if row_odd_even == "odd" %}
-                                          {% set row_odd_even = "even" %}
-                                        {% else %}
-                                          {% set row_odd_even = "odd" %}
-                                        {% endif %}
-                                          
                                       {% endfor %}
                                     </tbody>
                                 </table>

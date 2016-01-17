@@ -200,7 +200,7 @@ def GetPathDataDict(path):
   
 
   # Page static data
-  data['page_title'] = 'SLoCUST Demo'
+  data['page_title'] = page['title']
 
   # Page dynamic data
 
