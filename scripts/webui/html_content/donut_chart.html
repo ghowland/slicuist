@@ -1,0 +1,31 @@
+                    <!-- /.panel -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> {{ title }}
+                        </div>
+                        <div class="panel-body">
+                            <div id="{{ element_id }}"></div>
+                            <a href="#" class="btn btn-default btn-block">{{ button_label }}</a>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+
+<script>
+$(function() {
+
+    Morris.Donut({
+        element: '{{ element_id }}',
+        data: [
+      {% for item in items %}
+        {
+            label: "{{ item.name}}",
+            value: {{ item.value }}
+        },
+      {% endfor %}
+        ],
+        resize: true
+    });
+
+});
+
+</script>

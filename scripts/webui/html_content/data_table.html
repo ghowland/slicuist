@@ -1,0 +1,46 @@
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            {{ title }}
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="dataTable_wrapper">
+                                <table class="table table-striped table-bordered table-hover" id="{{ element_id }}">
+                                    <thead>
+                                        <tr>
+                                          {% for field in fields %}
+                                            <th>{{ field.label_default }}</th>
+                                          {% endfor %}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                      {% set row_odd_even = "odd" %}
+                                      {% for item in rows %}
+                                        <tr class="{{ row_odd_even }}">
+                                          {% for field in fields %}
+                                            <td>{{ item[field.name] }}</td>
+                                          {% endfor %}
+                                        </tr>
+                                        
+                                        {% if row_odd_even == "odd" %}
+                                          {% set row_odd_even = "even" %}
+                                        {% else %}
+                                          {% set row_odd_even = "odd" %}
+                                        {% endif %}
+                                          
+                                      {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.table-responsive -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+
+
+<script>
+        $('#{{ element_id }}').DataTable({
+                responsive: true
+        });
+</script>

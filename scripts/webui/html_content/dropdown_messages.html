@@ -1,0 +1,29 @@
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-{{ icon }} fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-messages">
+                      {% for item in items %}
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <strong>{{ item.name }}</strong>
+                                    <span class="pull-right text-muted">
+                                        <em>{{ item.value }}</em>
+                                    </span>
+                                </div>
+                                <div>{{ item.sql }}</div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                      {% endfor %}
+                      
+                        <li>
+                            <a class="text-center" href="#">
+                                <strong>{{ button_label }}</strong>
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-messages -->
+                </li>

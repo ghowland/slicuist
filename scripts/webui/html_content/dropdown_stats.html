@@ -1,0 +1,27 @@
+                <!-- /.dropdown -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-{{ icon }} fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-alerts">
+                      {% for item in items %}
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <i class="fa fa-{{ item.icon }} fa-fw"></i> {{ item.name }}
+                                    <span class="pull-right text-muted small">{{ item.value }}</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                      {% endfor %}
+                      
+                        <li>
+                            <a class="text-center" href="#">
+                                <strong>{{ button_label }}</strong>
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-alerts -->
+                </li>

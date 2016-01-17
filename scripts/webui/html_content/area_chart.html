@@ -1,0 +1,39 @@
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-{{ icon }} fa-fw"></i> {{ title }}
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div id="{{ element_id }}"></div>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+
+<script>
+$(function() {
+
+    Morris.Area({
+        element: '{{ element_id }}',
+        
+        data: [
+      
+      {% for item in items %}
+        {
+            period: '{{ item.id }}',
+            value: {{ item.value }},
+        },
+      {% endfor %}
+      
+        ],
+        
+        xkey: 'period',
+        ykeys: ['value'],
+        labels: ['Value'],
+        pointSize: 2,
+        hideHover: 'auto',
+        resize: true
+    });
+
+});
+
+</script>
