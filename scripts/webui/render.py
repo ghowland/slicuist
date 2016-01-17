@@ -30,9 +30,8 @@ def Render(cursor, widget_data, page_widge_data, data):
 
   # Determine if any values need to be looked up
   for (key, value) in data.items():
-    # If this is a lookup
-    #TODO(g): Should be a flag?  Or something more unique?  Want to avoid collisions with static data, but really already doing a lot of that
-    if value.startswith('table.'):
+    # If this is a table lookup
+    if value.startswith('__table.'):
       print 'Value: %s' % value
       (_, table_name, row_id, fieldname) = value.split('.')
       
@@ -45,6 +44,53 @@ def Render(cursor, widget_data, page_widge_data, data):
         
         # Set the data key value to this new value
         data[key] = value
+    
+    
+    # Else, if this is getting all the rows from a table
+    elif value.startswith('__rows.'):
+      print 'Value: %s' % value
+      (_, table_name) = value.split('.')
+      
+      sql = "SELECT * FROM %s" % table_name
+      rows = database.Query(cursor, sql)
+      
+      print 'Rows: %s' % rows
+      
+      # Set the data key value the rows
+      data[key] = rows
+    
+    
+    # Else, if this is getting all the fields from a table
+    elif value.startswith('__fields.'):
+      print 'Value: %s' % value
+      (_, table_name) = value.split('.')
+      
+      sql = "SELECT * FROM schema_table WHERE name = ?"
+      table_list = database.Query(cursor, sql, [table_name])
+      
+      #TODO(g): Handle failure to find this table with error/messages/etc, for now assuming success
+      if table_list:
+        table = table_list[0]
+        
+        sql = "SELECT * FROM schema_table_field WHERE schema_table = ? ORDER BY column_order"
+        fields = database.Query(cursor, sql, [table['id']])
+        
+        print 'Fields: %s' % fields
+        
+        # Do a little fix-up on the label_default, if it is NULL.  Auto-formatting based on the 'name' field
+        for field in fields:
+          if field['label_default'] == None:
+            # Underscores into spaces and upper case the first letter of every word
+            field['label_default'] = field['name'].replace('_', ' ')
+            
+            words = field['label_default'].split(' ')
+            for count in range(0, len(words)):
+              words[count] = words[count][0].upper() + words[count][1:].lower()
+            
+            field['label_default'] = ' '.join(words)
+        
+        # Set the data key value the fields
+        data[key] = fields
 
 
   # Use Jinja to get our template
