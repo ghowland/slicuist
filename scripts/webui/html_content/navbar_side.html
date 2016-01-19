@@ -12,7 +12,7 @@
                             </div>
                             <!-- /input-group -->
                         </li>
-                      {% for item in items %}
+                      {% for item in items if item.parent == None %}
                         <li>
                             <a href="{{ item.name }}"><i class="fa fa-{{ item.icon }} fa-fw"></i> {{ item.name }}</a>
                         </li>

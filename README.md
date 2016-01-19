@@ -1,4 +1,4 @@
-# SLoCUST
+# SLiCUIST
 
 ## Sub-Linear Complexity UI System Template
 
