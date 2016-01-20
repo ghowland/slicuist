@@ -171,3 +171,29 @@ You can also re-order fields in lists, rename them (with their formatted labels)
 
 Layout of the page's area's grid widgets is driven through a GUI in the website, for faster and more interactive development.
 
+## Testing - Layer 5
+
+### Layer 5.1: Testing widget templates dynamically
+
+Widgets are the components that make up the content of web pages.  They can be tested as deterministic functions, when given a certain set of inputs they should always return the same outputs, or require new baselines to be saved if there are changes.
+
+Setting up complete code coverage with a variety of inputs per widget allows them to be tested for any unexpected changes in their results.
+
+### Layer 5.2: Testing web pages dynamically
+
+Similar to testing widgets, web pages may also be able to be deterministically tested, if they are working from a stable set of data.  Any changes to the data set, and the dynamic nature of the results may change.
+
+Timestamps need to be passed around universally, so that the same time stamp can be used on the test runs every time, ensuring that any time-oriented dynamic content is the same on all runs.
+
+### Layer 5.3: Testing RPC specifications dynamically
+
+RPC is similar to web page rendering, but it is common for RPCs to change the data set.  These tests must be run in-sequence and on a restored database data set, to ensure that the results are always the same as the baselines.
+
+### Layer 5.4: Tests are stored in the Database
+
+Tests are stored in the database, so they can be dynamically added, and are not one-off scripts or configuration files.
+
+### Layer 5.5: Tests Managed and Driven by GUI
+
+Testing can also be controlled through a web-site GUI, for faster and more interactive development.
+
