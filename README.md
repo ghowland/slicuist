@@ -4,13 +4,33 @@
 
 SLiCUIST, pronounced as "sleekest", is an example of my methodology for doing dynamic client-server in a way that takes minimal setup, and can scale massively, while costing sub-linear amounts of effort to set up new UI.
 
-I have often read complaints about how the Web is a ghetto compared to traditional rich GUI libraries, which I have found to be exactly the opposite for myself.  I have worked with traditional GUI libraries for over 20 years and have found them very difficult to get initially set up, and even more difficult to change once they are set up, and very limited in terms of how much depth and breadth can be added to them due to their bulky and heavy nature.  
+I have often read complaints about how Web Development is awful compared to traditional rich GUI libraries, which I have found to be exactly the opposite for myself.  I have worked with traditional GUI libraries for over 20 years and have found them very difficult to get initially set up, and even more difficult to change once they are set up, and very limited in terms of how much depth and breadth can be added to them due to their bulky and heavy nature.  
 
 Frequently early decisions limit the amount of UI that can actually be created later, as the data structures are simply not available or cannot be connected with a reasonable amount of work to existing UI.
 
 In contrast, the methodology I have been using through browsers (HTML/JS on the client, with the majority of dynamic generation on the server) has been scaling excellently for me for the past 10 years (now 2015), and I would say is "infinitely" scalable with a "sub-linear" amount of effort and complexity, which means that as you add more UI to an application it takes less time than it did the first time for additional components of a similar nature.
 
 The goal of efficiency should be to create logarithmic functions, but this takes many efficiencies to create, and may ultimately be impossible and require an "M*log(N)" algorithm at best.  Still, sub-linear is a great efficiency over the N^2 and above type complexities I have found in working with traditional GUI libraries and frameworks.
+
+### What do you mean by "Sub-Linear Complexity"?
+
+For me, the biggest problem to solve is always programmer time.  The length of time it takes to develop software to solve a problem is too damn long!
+
+When other optimizations are required, such as execution speed, memory or storage size, these are usually able to be solved by inspecting the specific problem's parameters, and making adjustments that account for exactly how that work can be minimally done with the specific infrastructure being used to run the software.
+
+What about all the other cases?
+
+For all cases where the primary problem remains how long it takes to develop software, and by how many people.  This is especially true for the "maintenance" of software, which is actually extending the software to do things it was not previously doing before.
+
+This "maintainence" is actually much more difficult than the word makes it sound, as it sounds like maybe some wheels might need oiling, or it might have to be re-painted.  Instead, what "maintenance" means (as we all know from experience) is that we want to re-design the software, as minimally as possible, to allow it to continue to do exactly what it is already doing, while making only specific feature changes, that will work in the desired fashion.  This is significantly more difficult than performing these same feature requests on a new piece of software, since there are no previousy restrictions, where an existing piece of software already does what it does perfectly, and any changes are likely to break that, and may not be easily made with the previous decisions which didn't take the new decisions into account.
+
+So...  "Sub-Linear Complexity" is referring to <b>this</b> kind of complexity, the kind that has to do with making more and more features, and making more and more changes inside those features.  It is the "Complexity of More", or the "Complexity of Scaling".
+
+Since creating more things is always a scaling issue, then the question is how can this scaling be done efficiently?
+
+This Sub-Linear Complexity system was developed to deal with this problem directly, by turning things that were previously done by hand as one-offs (source files, web page files, config files), and creating a database based system for containing all of that data, so it works systematically, and not as one-offs.
+
+This allows for more efficient scalability, as the data schema defines how growth will occur, so there are less differences which cause scalability bottlenecks.
 
 ## Installation
 
