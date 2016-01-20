@@ -36,7 +36,9 @@ When other optimizations are required, such as execution speed, memory or storag
 
 What about all the other cases?
 
-For all cases where the primary problem remains how long it takes to develop software, and by how many people.  This is especially true for the "maintenance" of software, which is actually extending the software to do things it was not previously doing before.
+For all cases where the primary problem remains how long it takes to develop software, and by how many people, the optimization problem remains on development time and development complexity.  How long does the work take to complete, and how difficult is the work to complete correctly?
+
+This is especially true for the "maintenance" of software, which is actually extending the software to do things it was not previously doing before.
 
 This "maintainence" is actually much more difficult than the word makes it sound, as it sounds like maybe some wheels might need oiling, or it might have to be re-painted.  Instead, what "maintenance" means (as we all know from experience) is that we want to re-design the software, as minimally as possible, to allow it to continue to do exactly what it is already doing, while making only specific feature changes, that will work in the desired fashion.  This is significantly more difficult than performing these same feature requests on a new piece of software, since there are no previousy restrictions, where an existing piece of software already does what it does perfectly, and any changes are likely to break that, and may not be easily made with the previous decisions which didn't take the new decisions into account.
 
