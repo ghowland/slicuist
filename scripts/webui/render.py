@@ -15,7 +15,7 @@ from jinja2 import Environment, FileSystemLoader
 JINJA_ENVIRONMENT = Environment(loader=FileSystemLoader('.'), autoescape=False)
 
 
-def Render(cursor, widget_data, page_widge_data, data):
+def Render(server_request, cursor, widget_data, page_widget_data, data):
   """This will render an HTML 'widget', or dynamic component in a page.
 
   Args:
@@ -26,7 +26,7 @@ def Render(cursor, widget_data, page_widge_data, data):
 
   html_path = widget_data['path']
 
-  element_id = page_widge_data['name']
+  element_id = page_widget_data['name']
 
   # Determine if any values need to be looked up
   for (key, value) in data.items():
@@ -49,7 +49,24 @@ def Render(cursor, widget_data, page_widge_data, data):
     # Else, if this is getting all the rows from a table
     elif value.startswith('__rows.'):
       print 'Value: %s' % value
-      (_, table_name) = value.split('.')
+      (_, table_name) = value.split('.', 1)
+      
+      # If this is a lookup from our args, do the lookup
+      if table_name.startswith('{') and table_name.endswith('}'):
+        lookup = table_name.split('{', 1)[1]
+        lookup = lookup.split('}', 1)[0]
+        
+        sql = "SELECT * FROM schema_table WHERE id = ?"
+        print 'Table Lookup SQL: %s: %s' % (sql, server_request.args[lookup])
+        table_list = database.Query(cursor, sql, [server_request.args[lookup]])
+        
+        if not table_list:
+          raise Exception('Couldnt find schema table ID: %s: %s' % (lookup, value))
+        
+        #TODO(g): Ensure we are working with the correct schema (database), currently there is only 1, so it is always correct, but this is made to work with multiple datasources, so it might not be the same one and this would be casting too wide a search by not limiting it to the correct schema first...
+        pass
+        
+        table_name = table_list[0]['name']
       
       sql = "SELECT * FROM %s" % table_name
       rows = database.Query(cursor, sql)

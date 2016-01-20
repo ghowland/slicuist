@@ -80,16 +80,16 @@ def RenderPage(server_request, path):
   if not path:
     path = 'index.html'
 
-  # Dynamically render HTML pages, also RPC requests
-  if path.endswith('.html') or path.startswith('rpc/'):
-    # Get the page from the path
-    page = GetPageFromPath(server_request, path)
-    
+  # Get the page from the path
+  page = GetPageFromPath(server_request, path)
+  
+  # Dynamically render HTML pages, also RPC requests.  Anything we know about in the server (isnt just static)
+  if page:
     # If you want to prefix the HTML pages in the TEMPLATE_PATH directory, so that formatting here.  Currently it's flat.
     template_path = page['path']
     
     # Any data we want to get into the templated path should go into this dict
-    template_data = GetPathDataDict(page)
+    template_data = GetPathDataDict(server_request, page)
     
     print 'Templating: %s' % template_path
     
@@ -195,7 +195,7 @@ def GetPageFromPath(server_request, path):
   return page
 
 
-def GetPathDataDict(page):
+def GetPathDataDict(server_request, page):
   """Returns a dict of all the data needed to template a page."""
   data = {}
 
@@ -234,7 +234,7 @@ def GetPathDataDict(page):
       
       # Render the widget from our HTML path, the page_widget name (element ID), and JSON data recorded as argument info from the page_widget_data
       #TODO(g): Will also need to pull in arguments, because sometimes we need page state to base on what the UI elements will deliver.  Add this in once the basic functinoality works.
-      widget_output = webui.Render(cursor, widget, page_widget, widget_data)
+      widget_output = webui.Render(server_request, cursor, widget, page_widget, widget_data)
       
       # Put the widget output into our data
       data[page_widget['name']] = widget_output
