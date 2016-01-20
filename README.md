@@ -50,7 +50,9 @@ The <a href="templates/">templates/</a> path will also server as our Document Ro
 
 I have written the example Python dynamic web server portion of this using Flask, which is a "micro-framework", and thus has very short code paths.  The initial version is a very simple and naive RPC implementation.  I may extend this to demonstrate REST and other styles of RPC in the future, but those are not necessary to demonstrate this technique as they are just syntax sugar and conventions for a different type of scalability (mostly, name spaces and consistent access methods).
 
-# Levels
+# SLiCUIST Layers
+
+I have split the SLiCUIST models into 4 layers, so that each layer's design can be considered independently, as they could be replaced at that layer with a different mechanic for doing the work than the one I suggest here, while the other layers are independent of that decision.
 
 ## Client/Server Communication - Layer 1
 
