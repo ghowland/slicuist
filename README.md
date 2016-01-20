@@ -165,7 +165,11 @@ You can also re-order fields in lists, rename them (with their formatted labels)
 
 ## Advanced GUI Management - Layer 4
 
-### Layer 4.1: RPC Scripts and Profile Editing and Management is GUI Driven
+### Layer 4.1: RPC Scripts and Profiler Editing and Management is GUI Driven
+
+Add/Remove the scripts that are used for doing generation.  This could be done using a version control system, like Git, and dynamically loading modules, but there are other ways as well.
+
+Being able to test RPC scripts by setting up required inputs under different tests, and then seeing the execution results in the web site allows for faster and more interactive development.
 
 ### Layer 4.2: Page Dynamic Composition is GUI Driven
 
