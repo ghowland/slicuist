@@ -10,7 +10,7 @@ Frequently early GUI implemention decisions limit the amount of UI that can actu
 
 In contrast, the methodology I have been using through browsers (HTML/JS on the client, with the majority of dynamic generation on the server) has been scaling excellently for me for the past 10 years (now 2015), and I would say is "infinitely" scalable with a "sub-linear" amount of effort and complexity, which means that as you add more UI to an application it takes less time than it did the first time for additional components of a similar nature.  This is in comparison to my own experience with traditional GUIs where it takes a reasonable amount of time to get a single set of UI working together, but extending it further and further becomes more unreasonable as you add features and complexity.
 
-Web UI is all-too-often created to simulate traditional GUIs, which is ignoring the benefits that the web client-server model provides.  We should optimize for the platform we have, to get the most out of it, not simply try to wrap it as if it can be treated as something else and still be nearly as efficient in terms of the design.
+Web UI is all-too-often created to simulate traditional GUIs, which is ignoring the benefits that the web client-server model provides.  We should optimize for the platform we have, to get the most out of it.
 
 The goal of efficiency should be to create logarithmic functions, but this takes many efficiencies to create, and may ultimately be impossible and require an "M*log(N)" algorithm at best.  Still, sub-linear is a great efficiency over the N^2 and above type complexities I have found in working with traditional GUI libraries and frameworks.
 
