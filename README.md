@@ -48,7 +48,7 @@ Since creating more things is always a scaling issue, then the question is how c
 
 This Sub-Linear Complexity system was developed to deal with this problem directly, by turning things that were previously done by hand as one-offs (source files, web page files, config files), and creating a database based system for containing all of that data, so it works systematically, and not as one-offs.
 
-This allows for more efficient scalability, as the data schema defines how growth will occur, so there are less differences which cause scalability bottlenecks.
+This allows for more efficient scalability, as the data schema defines how growth will occur, so there are less differences which cause scalability bottlenecks, and data can be added programmatically, which removes the requirement for dedicate human content check-in processes (writing code, checking it in, testing it, deploying it, etc).
 
 ## Installation
 
