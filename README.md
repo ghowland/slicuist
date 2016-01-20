@@ -40,6 +40,8 @@ http://127.0.0.1:5000/
 
 ## Example Website
 
+![SLiCUIST Page Example](docs/images/slicuist_page_example.png)
+
 I am using the base Bootstrap web template released under the Apache 2.0 license at: http://startbootstrap.com/template-overviews/sb-admin-2/
 
 You can find the full files under the <a href="web_template/">web_template/</a> path for your convenience, but you can also pull this down from the above link or through Bower also described in the above link.  Obviously the Slocust technique works with any type of HTML-style client-server request workflow, so this is just a convenient example as it has many UI elements put together already for us.
