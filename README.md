@@ -2,7 +2,7 @@
 
 ## Sub-Linear Complexity UI System Template
 
-SLiCUIST, pronounced as "sleekest", is an example of my methodology for doing dynamic web client-server rendering in a way that takes minimal setup, and can scale massively, while costing sub-linear amounts of effort to set up new UI.
+SLiCUIST, pronounced as "sleekest", is an example of my methodology for doing dynamic web client-server rendering in a way that takes minimal setup, and can scale massively, while costing sub-linear amounts of effort to set up new UI and content.
 
 I have often read complaints about how Web Development is awful compared to traditional rich GUI libraries, which I have found to be exactly the opposite for myself.  I have worked with traditional GUI libraries for over 20 years and have found them very difficult to get initially set up, and even more difficult to change once they are set up, and very limited in terms of how much depth and breadth can be added to them due to their bulky and heavy nature.  
 
