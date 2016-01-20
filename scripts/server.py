@@ -40,7 +40,7 @@ else:
 DATABASE = 'database/opsdb.db'
 
 # Flask server name
-SERVER_NAME = 'slocust_demo'
+SERVER_NAME = 'slicuist_demo'
 
 # Listening Port
 SERVER_PORT = 5000
@@ -62,7 +62,7 @@ class FileNotFoundException(Exception):
 @SERVER.route('/', methods=['GET', 'POST'])
 def RenderIndex():
   """Render the index, which cant provide a path variable."""
-  return RenderPage('')
+  return RenderPage(request, '')
 
 
 @SERVER.route('/<path:path>', methods=['GET', 'POST'])
@@ -71,23 +71,28 @@ def RenderPath(path):
   
   Path allows slashes, but doesnt verify that any files exist or anything.
   """
-  return RenderPage(path)
+  return RenderPage(request, path)
 
 
-def RenderPage(path):
+def RenderPage(server_request, path):
   """Every page is rendered exactly the same way.  Paths are irrelevant except as another data point."""
   # Set the index path, if we got nothing
   if not path:
     path = 'index.html'
 
-  # Dynamically render HTML pages
-  if path.endswith('.html'):
+  # Dynamically render HTML pages, also RPC requests
+  if path.endswith('.html') or path.startswith('rpc/'):
+    # Get the page from the path
+    page = GetPageFromPath(server_request, path)
+    
     # If you want to prefix the HTML pages in the TEMPLATE_PATH directory, so that formatting here.  Currently it's flat.
-    template_path = path
-
+    template_path = page['path']
+    
     # Any data we want to get into the templated path should go into this dict
-    template_data = GetPathDataDict(path)
-
+    template_data = GetPathDataDict(page)
+    
+    print 'Templating: %s' % template_path
+    
     return render_template(template_path, **template_data)
 
   # All other requests are static, and are not templated
@@ -96,15 +101,15 @@ def RenderPage(path):
     try:
       # Get the static content from our TEMPLATE_PATH first and STATIC_PATH if it doesnt exist in the template path
       static_path = GetStaticPath(path)
-
+      
       content = open(static_path).read()  # Maximum typing efficiency and use of garbage collector!
-
+      
       # Make a response object and set the MIME type so the content works in the browser
       response = SERVER.make_response(content)
       response.mimetype = GetPathMimeType(path)
-
+      
       return response
-
+    
     # GetStaticPath() throws this if it cant find a path in our dynamic templates or our static files
     except FileNotFoundException, e:
       #TODO(g): Handle this the Flask way, also use a template page instead of 1 sentance string
@@ -133,32 +138,73 @@ def GetStaticPath(path):
     raise FileNotFoundException('Could not find: %s' % path)
 
 
-def GetPathDataDict(path):
-  """Returns a dict of all the data needed to template a page."""
-  data = {}
-
+def GetPageFromPath(server_request, path):
+  """Returns the web_site_page dict for the specified request (site) and path (URI).
+  
+  Returns: dict or None
+  """
   # Get SQLite3 database cursor
   cursor = database.GetDatabaseCursor(DATABASE)
 
   #TODO(g): Dont do this every time.  It's wasteful...  Mostly un-elegant, since its such a fast operation...
   database.populate_stats.PopulateSchemaStatistics(cursor)
 
+  # Get the Hostname and the port for this server request
+  if ':' in server_request.host:
+    (hostname, port) = server_request.host.split(':', 1)
+    port = int(port)
+  
+  else:
+    hostname = server_request.host
+    port = None
+  
+  print 'Hostname: %s' % server_request.host
+  print 'Headers: %s' %  server_request.headers
+  
+  # Save the actual hostname, as we might have an XFF different hostname
+  actual_hostname = hostname
+  
+  # Replace the hostname with the XFF, if it exists
+  if 'X-Forwarded-For' in server_request.headers:
+    hostname = server_request.headers['X-Forwarded-For']
+
 
   # Get the web_site -- Currently just getting any page that matches, this is not the full demo functionality
   #TODO(g): X-Forwarded-For (priority), or domain from the request.  Check them all.
-  pass
+  sql = "SELECT * FROM web_site_domain WHERE name = ?"
+  web_site_domain_list = database.Query(cursor, sql, [hostname])
   
+  # If we didnt find the web_site, we cant find this page
+  if not web_site_domain_list:
+    print 'ERROR: Web site for domain not found: %s' % hostname
+    return None
+  
+  web_site_domain = web_site_domain_list[0]
 
   # Dyanmically get the page from the web_site and web_site_page
-  sql = "SELECT * FROM web_site_page WHERE name = ?"
-  pages = database.Query(cursor, sql, [path])
+  sql = "SELECT * FROM web_site_page WHERE web_site = ? AND name = ?"
+  pages = database.Query(cursor, sql, [web_site_domain['web_site'], path])
   
   # If we didnt find any page, just return empty data.  There is nothing to template.
   if not pages:
-    return {}
+    return None
   
   # The first page is our page
   page = pages[0]
+  
+  return page
+
+
+def GetPathDataDict(page):
+  """Returns a dict of all the data needed to template a page."""
+  data = {}
+
+  # If we dont have a valid page, return empty data dict
+  if not page:
+    return {}
+
+  # Get SQLite3 database cursor
+  cursor = database.GetDatabaseCursor(DATABASE)
   
   
   # Generate the nav-bar from the web_site_map and web_site_map_items
