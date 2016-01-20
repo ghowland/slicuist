@@ -36,7 +36,7 @@ When other optimizations are required, such as execution speed, memory or storag
 
 What about all the other cases?
 
-For all cases where the primary problem remains how long it takes to develop software, and by how many people, the optimization problem remains on development time and development complexity.  How long does the work take to complete, and how difficult is the work to complete correctly?
+For all cases where the primary problem remains how long it takes to develop software, and by how many people, the optimization problem remains on development time and development complexity.  How long does the work take to complete, and how difficult is the work to complete correctly?  Can the work be tested before it reaches production?  How can you assure new content will follow the rules that existing content follows?
 
 This is especially true for the "maintenance" of software, which is actually extending the software to do things it was not previously doing before.
 
