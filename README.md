@@ -163,41 +163,41 @@ You can add/remove fields in your Schema Management directly through your web GU
 
 You can also re-order fields in lists, rename them (with their formatted labels), specify how they are editted, etc.
 
-## Advanced GUI Management - Layer 4
+## Testing - Layer 4
 
-### Layer 4.1: RPC Scripts and Profiler Editing and Management is GUI Driven
-
-Add/Remove the scripts that are used for doing generation.  This could be done using a version control system, like Git, and dynamically loading modules, but there are other ways as well.
-
-Being able to test RPC scripts by setting up required inputs under different tests, and then seeing the execution results in the web site allows for faster and more interactive development.
-
-### Layer 4.2: Page Dynamic Composition is GUI Driven
-
-Layout of the page's area's grid widgets is driven through a GUI in the website, for faster and more interactive development.
-
-## Testing - Layer 5
-
-### Layer 5.1: Testing widget templates dynamically
+### Layer 4.1: Testing widget templates dynamically
 
 Widgets are the components that make up the content of web pages.  They can be tested as deterministic functions, when given a certain set of inputs they should always return the same outputs, or require new baselines to be saved if there are changes.
 
 Setting up complete code coverage with a variety of inputs per widget allows them to be tested for any unexpected changes in their results.
 
-### Layer 5.2: Testing web pages dynamically
+### Layer 4.2: Testing web pages dynamically
 
 Similar to testing widgets, web pages may also be able to be deterministically tested, if they are working from a stable set of data.  Any changes to the data set, and the dynamic nature of the results may change.
 
 Timestamps need to be passed around universally, so that the same time stamp can be used on the test runs every time, ensuring that any time-oriented dynamic content is the same on all runs.
 
-### Layer 5.3: Testing RPC specifications dynamically
+### Layer 4.3: Testing RPC specifications dynamically
 
 RPC is similar to web page rendering, but it is common for RPCs to change the data set.  These tests must be run in-sequence and on a restored database data set, to ensure that the results are always the same as the baselines.
 
-### Layer 5.4: Tests are stored in the Database
+### Layer 4.4: Tests are stored in the Database
 
 Tests are stored in the database, so they can be dynamically added, and are not one-off scripts or configuration files.
 
-### Layer 5.5: Tests Managed and Driven by GUI
+### Layer 4.5: Tests Managed and Driven by GUI
 
 Testing can also be controlled through a web-site GUI, for faster and more interactive development.
+
+## Advanced GUI Management - Layer 5
+
+### Layer 5.1: RPC Scripts and Profiler Editing and Management is GUI Driven
+
+Add/Remove the scripts that are used for doing generation.  This could be done using a version control system, like Git, and dynamically loading modules, but there are other ways as well.
+
+Being able to test RPC scripts by setting up required inputs under different tests, and then seeing the execution results in the web site allows for faster and more interactive development.
+
+### Layer 5.2: Page Dynamic Composition is GUI Driven
+
+Layout of the page's area's grid widgets is driven through a GUI in the website, for faster and more interactive development.
 
