@@ -1,3 +1,7 @@
+// Global variable to store data as a global dictionary
+__js_data = new Object();
+
+
 // RPC: Remote Procedure Call, automated back to path/rpc/FunctionName
 //
 // On return will automatically fill in Object() key results into tag IDs of
@@ -5,11 +9,12 @@
 //    and performs an eval() on each after updating all the tag IDs
 //
 function RPC(url, input_data, on_complete_function) {
-  //alert('RPC: ' + rpc + ': ' + input_data.toSource())  // Use to test
+  //alert('RPC: ' + url + ': ' + input_data.toSource())  // Use to test
 
   // AJAX Code To Submit Form.
   $.ajax({
-    type: "POST",
+    //type: "POST",
+    type: "GET",
     url: url,
     data: input_data,
     cache: false,
@@ -31,13 +36,13 @@ function RPCUrl(url, data) {
 
 // Process the RPC response data, can be done without using the RPC call as well
 function ProcessRPCData(data) {
-  var js_data = undefined;
+  var js_execute = undefined;
   var reload_page = undefined;
   var load_page = undefined;
 
-  alert(data);
+  //alert(data);
   data = JSON.parse(data);
-  alert(data);
+  //alert(data);
 
   // Process the HTML sections, skip __js and __js_data
   for (var key in data)
@@ -52,11 +57,11 @@ function ProcessRPCData(data) {
     }
     // Save our Javascript array until later so we can deal with it then
     else if (key == '__js') {
-      js_data = data[key];
+      js_execute = data[key];        //TODO(g): Test this.  Havent yet...
     }
     // Save our Javascript array until later so we can deal with it then
     else if (key == '__js_data') {
-      js_data = data[key];
+      __js_data = data[key];
     }
     // Else, if this is a key to reload the page (self or somewhere else)
     else if (key == '__reload_page') {
@@ -68,13 +73,11 @@ function ProcessRPCData(data) {
     }
   }
   
-  // If we had JS data, eval() it all now.  After we have updated all
-  //    the ID data
-  if (js_data != undefined) {
-    for (var count in js_data) {
-      alert(js_data[count]);
-      eval(js_data[count]);
-    }
+  // If we had JS data, eval() it now.  This is JS code that is not related to any specific
+  //    element, and takes place after all elements have been updated (above)
+  if (js_execute != undefined) {
+    //alert(js_execute);    // Debug
+    eval(js_execute);     // Execute arbitrary Javascript, to control the page from the server
   }
   
   // Reload the page

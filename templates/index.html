@@ -56,9 +56,15 @@
     
     <!-- Custom Theme JavaScript -->
     <script src="../dist/js/sb-admin-2.js"></script>
+
+    
+    <!-- jQuery UI (Not the correctly matching version.  Fix that) -->
+    <link href="css/jquery-ui.min.css" rel="stylesheet">
+    <script src="js/jquery-ui.min.js"></script>
+    
     
     <!-- SLiCUIST RPC -->
-    <script src="js/slicuist.js"></script>
+    <script src="js/slicuist_rpc.js"></script>
     
 </head>
 
@@ -174,13 +180,17 @@
                 </div>
             </div>
         
+
+    
+            <!-- Dynamic Dialog Target-->
+            <div id="dialog">
+            </div>
         
         </div>
         <!-- /#page-wrapper -->
 
     </div>
     <!-- /#wrapper -->
-
 
 {% endautoescape %}
 </body>

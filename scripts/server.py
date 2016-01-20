@@ -46,8 +46,9 @@ SERVER_NAME = 'slicuist_demo'
 SERVER_PORT = 5000
 
 # Paths to our web content
-STATIC_PATH = 'web_template'  # Static content
-TEMPLATE_PATH = 'templates'   # Dynamic templates
+STATIC_CUSTOM_PATH = 'web_static'       # Static content: Custom
+STATIC_TEMPLATE_PATH = 'web_template'   # Static content: Bootstrap Template
+TEMPLATE_PATH = 'templates'             # Dynamic templates
 
 
 # -- Create the Flask server.  It is module level as we are going to use decorators against it for our module functions. --
@@ -122,17 +123,24 @@ def GetStaticPath(path):
   """Will try our template path, and fall back to our static path, so we have 
   options and our original content if we dont override it.
   """
-  template_path = '%s/%s' % (TEMPLATE_PATH, path)   # Try first
-  static_path = '%s/%s' % (STATIC_PATH, path)       # Try second
+  template_path = '%s/%s' % (TEMPLATE_PATH, path)                 # Try first
+  static_custom_path = '%s/%s' % (STATIC_CUSTOM_PATH, path)       # Try second
+  static_template_path = '%s/%s' % (STATIC_TEMPLATE_PATH, path)   # Try third
 
   # Return a valid path or raise an exception...
   if os.path.isfile(template_path):
     # It's one of our Template files
     return template_path
   
-  elif os.path.isfile(static_path):
+  # Static Custom
+  elif os.path.isfile(static_custom_path):
+    # It's a default static file (that we created for this probject, not from the base template)
+    return static_custom_path
+  
+  # Static Template
+  elif os.path.isfile(static_template_path):
     # It's a default static file (from our base template, that we havent modified at all)
-    return static_path
+    return static_template_path
   
   else:
     raise FileNotFoundException('Could not find: %s' % path)
@@ -211,7 +219,7 @@ def GetPathDataDict(server_request, page):
   pass
 
   # Get the widgets for this page
-  sql = "SELECT * FROM web_site_page_widget WHERE web_site_page = ?"
+  sql = "SELECT * FROM web_site_page_widget WHERE web_site_page = ? ORDER BY priority DESC"
   page_widgets = database.Query(cursor, sql, [page['id']])
   
   
@@ -234,7 +242,7 @@ def GetPathDataDict(server_request, page):
       
       # Render the widget from our HTML path, the page_widget name (element ID), and JSON data recorded as argument info from the page_widget_data
       #TODO(g): Will also need to pull in arguments, because sometimes we need page state to base on what the UI elements will deliver.  Add this in once the basic functinoality works.
-      widget_output = webui.Render(server_request, cursor, widget, page_widget, widget_data)
+      widget_output = webui.Render(server_request, cursor, widget, page_widget, widget_data, data)
       
       # Put the widget output into our data
       data[page_widget['name']] = widget_output

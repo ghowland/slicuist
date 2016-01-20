@@ -5,7 +5,7 @@
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <div class="dataTable_wrapper">
-                                <table class="table table-striped table-bordered table-hover" id="{{ element_id }}">
+                                <table class="table table-striped table-bordered table-hover" id="__table__{{ element_id }}">
                                     <thead>
                                         <tr>
                                           {% for field in fields %}
@@ -32,7 +32,7 @@
 
 
 <script>
-        $('#{{ element_id }}').DataTable({
+        $('#__table__{{ element_id }}').DataTable({
                 responsive: true
         });
 </script>

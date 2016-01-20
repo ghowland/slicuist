@@ -1,26 +1,27 @@
 
-                            <!-- Modal -->
-                            <div class="modal fade" id="{{ element_id }}" tabindex="-1" role="dialog" aria-labelledby="{{ label }}" aria-hidden="false">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                            <h4 class="modal-title" id="{{ label }}">{{ title }}</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                          {{ body }}
-                                        </div>
-                                        <div class="modal-footer">
-                                            {{ buttons }}
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                        </div>
-                                    </div>
-                                    <!-- /.modal-content -->
-                                </div>
-                                <!-- /.modal-dialog -->
-                            </div>
-                            <!-- /.modal -->
+<div id="{{ element_id }}" title="{{ title }}">
+    <p>
+        {{ body }}        
+    </p>
+</div>
 
 <script>
+$("#{{ element_id }}").dialog({
+        width: "60%",
+        modal: true,
+        resizable: true,
+        title: "{{ title }}",
+        icons: {
+          primary: "ui-icon-heart",  
+        },
+        buttons: {
+          "Close": function () {
+            $(this).dialog("close");
+          },
+          Cancel: function () {
+            $(this).dialog("close");
+          },
+        },
+    });
 </script>
 
