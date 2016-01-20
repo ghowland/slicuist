@@ -20,7 +20,7 @@ The goal of efficiency should be to create logarithmic functions (<i>log(N)</i>)
 
 I am using the base Bootstrap web template released under the Apache 2.0 license at: http://startbootstrap.com/template-overviews/sb-admin-2/
 
-You can find the full files under the <a href="web_template/">web_template/</a> path for your convenience, but you can also pull this down from the above link or through Bower also described in the above link.  Obviously the Slocust technique works with any type of HTML-style client-server request workflow, so this is just a convenient example as it has many UI elements put together already for us.
+You can find the full files under the <a href="web_template/">web_template/</a> path for your convenience, but you can also pull this down from the above link or through Bower also described in the above link.  Obviously the SLiCUIST technique works with any type of HTML-style client-server request workflow, so this is just a convenient example as it has many UI elements put together already for us.
 
 The active web files that the Python dynamic web server is using are under the <a href="templates/">templates/</a> path, which are stripped down versions of the <a href="web_template/">web_template/</a> content.  For my development methods I like to keep example files close by so I can copy and paste things out of them to test new UI, so I am leaving these slightly duplicated in this format so I can continue to extend this demonstration in my usual method, and you can use this method as well.
 
@@ -61,7 +61,7 @@ pip install flask
 Then pull down this repo locally:
 
 ```
-git clone https://github.com/ghowland/slocust.git
+git clone https://github.com/ghowland/clicuist.git
 ```
 
 Then run the server from the repo directory:
