@@ -54,9 +54,13 @@ I have written the example Python dynamic web server portion of this using Flask
 
 ## Client/Server Communication - Layer 1
 
+Layer 1 is the basic communication model of SLiCUIST, which is that the browser is a "Drop Target" for named content sections (generally DIV elements with specified IDs).  These targets can be replaced dynamically as needed after the initial rendering, using the same code that rendered the initial page.
+
+Additionally, dialog and other layered content can be added at any time to the page, using the initial page rendering's element IDs, or under dynamic names (uniquely hashed) for dynamic and layered content.
+
 ### Layer 1.1: Naming Convention
 
-Naming convention is used 
+Naming convention is used between the Server which renders the initial data, and the Client which holds it.  The names must match so that the Server can re-render the Client's components individually if necessary.
 
 ### Layer 1.2: Template Organization
 
