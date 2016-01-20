@@ -42,7 +42,7 @@ This is especially true for the "maintenance" of software, which is actually ext
 
 This "maintainence" is actually much more difficult than the word makes it sound, as it sounds like maybe some wheels might need oiling, or it might have to be re-painted.  Instead, what "maintenance" means (as we all know from experience) is that we want to re-design the software, as minimally as possible, to allow it to continue to do exactly what it is already doing, while making only specific feature changes, that will work in the desired fashion.  This is significantly more difficult than performing these same feature requests on a new piece of software, since there are no previousy restrictions, where an existing piece of software already does what it does perfectly, and any changes are likely to break that, and may not be easily made with the previous decisions which didn't take the new decisions into account.
 
-So...  "Sub-Linear Complexity" is referring to <b>this</b> kind of complexity, the kind that has to do with making more and more features, and making more and more changes inside those features.  It is the "Complexity of More", or the "Complexity of Scaling".
+So...  "Sub-Linear Complexity" is referring to <i>that</i> kind of complexity, the kind that has to do with making more and more features, and making more and more changes inside those features.  It is the "Complexity of More", or the "Complexity of Scaling".
 
 Since creating more things is always a scaling issue, then the question is how can this scaling be done efficiently?
 
