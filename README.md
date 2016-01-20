@@ -12,7 +12,7 @@ In contrast, the methodology I have been using through browsers (HTML/JS on the 
 
 Web UI is all-too-often created to simulate traditional GUIs, which is ignoring the benefits that the web client-server model provides.  We should optimize for the platform we have, to get the most out of it.
 
-The goal of efficiency should be to create logarithmic functions ("log(N)") where possible, but this takes creating efficiencies at every level we have available, and may ultimately be impossible and require an "M*log(N)" algorithm at best.  Still, sub-linear is a great efficiency over the N^2 and above type complexities I have found in working with traditional GUI libraries and frameworks.
+The goal of efficiency should be to create logarithmic functions ("O(log(N))") where possible, but this takes creating efficiencies at every level we have available, so that no aspect of the content addition (new UI or new content) takes as long or longer than a similar piece of work did in the past.  With decreasing effort/time to add new UI and content to this system, we may not reach logarithmic reduction of work (depending on your definition of work units), but we will definitey be working with sub-linear amounts of effort and time, which is a huge advantage over super-linear.
 
 ## Example Website
 
