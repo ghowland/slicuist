@@ -151,7 +151,7 @@ Creating new web sites, adding or changing their domain, and setting up pages to
 
 ### Layer 3.2: Dynamic RPC is GUI Driven
 
-Test RPC scripts inside the web site.
+Add, edit or remove RPC URIs inside the web site.
 
 ### Layer 3.3: Widget Rendering Data is Dynamic and GUI Driven
 
