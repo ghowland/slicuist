@@ -147,7 +147,7 @@ This allows many Widgets (components, etc) to be rendered onto a page based on d
 
 ### Layer 3.1: Web Site Database is GUI Driven
 
-Creating new web sites, adding or changing their domain, and 
+Creating new web sites, adding or changing their domain, and setting up pages to be rendered through a GUI in the website, which yields faster and more interactive development.
 
 ### Layer 3.2: Dynamic RPC is GUI Driven
 
@@ -155,7 +155,7 @@ Test RPC scripts inside the web site.
 
 ### Layer 3.3: Widget Rendering Data is Dynamic and GUI Driven
 
-Addition, editing and removal of widgets that are used to render web pages is
+Adding, editing and removing widgets can be done with a GUI in the website, which yields faster and more interactive development.
 
 ### Layer 3.4: Schema Management in Master Database is GUI Driven
 
