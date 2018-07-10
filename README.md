@@ -61,7 +61,7 @@ pip install flask
 Then pull down this repo locally:
 
 ```
-git clone https://github.com/ghowland/clicuist.git
+git clone https://github.com/ghowland/slicuist.git
 ```
 
 Then run the server from the repo directory:
